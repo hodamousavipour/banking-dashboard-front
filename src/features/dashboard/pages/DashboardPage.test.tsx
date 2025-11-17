@@ -51,9 +51,26 @@ vi.mock("../../../shared/hooks/useToastState", () => ({
 
 describe("DashboardPage", () => {
   beforeEach(() => {
-    summaryMock = { data: undefined, isLoading: false };
-    transactionsMock = { transactions: [], createTransaction: vi.fn() };
-    importMock = { isImporting: false, handleFileSelected: vi.fn() };
+    summaryMock = {
+      data: undefined,
+      isLoading: false,
+      isError: false,
+      refetch: vi.fn(),
+    };
+
+    transactionsMock = {
+      transactions: [],
+      createTransaction: vi.fn(),
+      updateTransaction: vi.fn(),
+      deleteTransaction: vi.fn(),
+      isCreating: false,
+    };
+
+    importMock = {
+      isImporting: false,
+      handleFileSelected: vi.fn(),
+    };
+
     toastMock = {
       toast: null,
       showSuccess: vi.fn(),
@@ -81,6 +98,22 @@ describe("DashboardPage", () => {
     expect(summary).toHaveTextContent("balance:100");
   });
 
+  it("shows error state and allows retry when summary fails", async () => {
+    const user = userEvent.setup();
+    summaryMock.isError = true;
+
+    render(<DashboardPage />);
+
+    expect(
+      screen.getByText(/Failed to load dashboard data/i)
+    ).toBeInTheDocument();
+
+    const retryButton = screen.getByRole("button", { name: /retry/i });
+    await user.click(retryButton);
+
+    expect(summaryMock.refetch).toHaveBeenCalledTimes(1);
+  });
+
   it("opens Add Transaction modal when button is clicked", async () => {
     const user = userEvent.setup();
 
@@ -95,7 +128,11 @@ describe("DashboardPage", () => {
   });
 
   it("renders Toast when toast state has a message", () => {
-    toastMock.toast = { message: "Hello toast", type: "success", onUndo: undefined };
+    toastMock.toast = {
+      message: "Hello toast",
+      type: "success",
+      onUndo: undefined,
+    };
 
     render(<DashboardPage />);
 

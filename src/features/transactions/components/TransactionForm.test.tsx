@@ -38,7 +38,7 @@ describe("TransactionForm", () => {
     render(
       <TransactionForm
         onSubmit={handleSubmit}
-        currentBalance={100} 
+        currentBalance={100}
       />
     );
 
@@ -56,7 +56,8 @@ describe("TransactionForm", () => {
     await user.click(submitButton);
 
     expect(handleSubmit).not.toHaveBeenCalled();
-    expect(screen.getByText(/insufficient funds/i)).toBeInTheDocument();
+
+    await screen.findByText(/insufficient funds/i);
   });
 
   it("syncs defaultValues when they change (edit mode)", async () => {
