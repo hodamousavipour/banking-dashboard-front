@@ -56,7 +56,10 @@ export default function TransactionsPage() {
 
   const isSubmitting = isCreating || isUpdating;
 
-  const currentBalance = transactions.reduce((sum, tx) => sum + tx.amount, 0);
+  const currentBalance = transactions.reduce(
+    (sum, tx) => sum + tx.amount,
+    0
+  );
 
   const { registerCreated, registerDeleted, registerUpdated } =
     useTransactionUndo({
@@ -70,7 +73,7 @@ export default function TransactionsPage() {
 
   useEffect(() => {
     setPage(1);
-  }, [q, from, to, kind, setPage]);
+  }, [q, from, to, kind]);
 
   const filtered = transactions.filter((tx) => {
     if (filters.q) {
@@ -125,31 +128,31 @@ export default function TransactionsPage() {
   const formDefaults: Partial<CreateTransactionFormData> | undefined =
     editing
       ? {
-          amount: editing.amount,
-          description: editing.description,
-          date: editing.date.slice(0, 10),
-        }
+        amount: editing.amount,
+        description: editing.description,
+        date: editing.date.slice(0, 10),
+      }
       : reuseSource
-      ? {
+        ? {
           amount: reuseSource.amount,
           description: reuseSource.description,
           date: reuseSource.date.slice(0, 10),
         }
-      : undefined;
+        : undefined;
 
   const isEditMode = Boolean(editing);
 
   const cardTitle = isEditMode
     ? "Edit Transaction"
     : reuseSource
-    ? "Reuse Transaction"
-    : "Add Transaction";
+      ? "Reuse Transaction"
+      : "Add Transaction";
 
   const submitLabel = isEditMode
     ? "Save changes"
     : reuseSource
-    ? "Create from this template"
-    : "Add transaction";
+      ? "Create from this template"
+      : "Add transaction";
 
   const handleSubmit = (values: CreateTransactionFormData) => {
     if (editing) {
@@ -223,8 +226,8 @@ export default function TransactionsPage() {
     error instanceof Error
       ? error.message
       : error
-      ? String(error)
-      : null;
+        ? String(error)
+        : null;
 
   return (
     <div className="space-y-6">
@@ -234,14 +237,14 @@ export default function TransactionsPage() {
           onSubmit={handleSubmit}
           isSubmitting={isSubmitting}
           submitLabel={submitLabel}
-          currentBalance={currentBalance}
           isEditMode={isEditMode}
+          currentBalance={currentBalance}
           onCancel={
             isEditMode || reuseSource
               ? () => {
-                  setEditing(null);
-                  setReuseSource(null);
-                }
+                setEditing(null);
+                setReuseSource(null);
+              }
               : undefined
           }
         />
