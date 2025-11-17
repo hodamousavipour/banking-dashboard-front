@@ -62,8 +62,12 @@ export default function TransactionForm({
   }, [defaultValues?.amount, defaultValues?.description, defaultValues?.date, reset]);
 
   const submit = (data: CreateTransactionFormData) => {
-    if (typeof currentBalance === "number") {
-    const newBalance = currentBalance + data.amount;
+  if (typeof currentBalance === "number") {
+
+    const prevAmount = defaultValues?.amount ?? 0;
+
+    // newBalance = current - old + new
+    const newBalance = currentBalance - prevAmount + data.amount;
 
     if (newBalance < 0) {
       setError("amount", { message: "Insufficient funds" });
@@ -71,8 +75,8 @@ export default function TransactionForm({
     }
   }
 
-    onSubmit(data);
-  };
+  onSubmit(data);
+};
 
   useEffect(() => {
     if (isSubmitSuccessful && !defaultValues) {
