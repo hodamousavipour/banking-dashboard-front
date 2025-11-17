@@ -56,10 +56,7 @@ export default function TransactionsPage() {
 
   const isSubmitting = isCreating || isUpdating;
 
-  const currentBalance = transactions.reduce(
-    (sum, tx) => sum + tx.amount,
-    0
-  );
+  const currentBalance = transactions.reduce((sum, tx) => sum + tx.amount, 0);
 
   const { registerCreated, registerDeleted, registerUpdated } =
     useTransactionUndo({
@@ -73,7 +70,7 @@ export default function TransactionsPage() {
 
   useEffect(() => {
     setPage(1);
-  }, [q, from, to, kind]);
+  }, [q, from, to, kind, setPage]);
 
   const filtered = transactions.filter((tx) => {
     if (filters.q) {
@@ -237,7 +234,8 @@ export default function TransactionsPage() {
           onSubmit={handleSubmit}
           isSubmitting={isSubmitting}
           submitLabel={submitLabel}
-          currentBalance={currentBalance}   
+          currentBalance={currentBalance}
+          isEditMode={isEditMode}
           onCancel={
             isEditMode || reuseSource
               ? () => {

@@ -15,6 +15,7 @@ type Props = {
   currentBalance?: number;
   submitLabel?: string;
   onCancel?: () => void;
+  isEditMode?: boolean;
 };
 
 function getToday() {
@@ -28,6 +29,7 @@ export default function TransactionForm({
   currentBalance,
   submitLabel,
   onCancel,
+  isEditMode = false,
 }: Props) {
   const emptyDefaults: CreateTransactionFormData = {
     amount: "" as unknown as number,
@@ -62,21 +64,22 @@ export default function TransactionForm({
   }, [defaultValues?.amount, defaultValues?.description, defaultValues?.date, reset]);
 
   const submit = (data: CreateTransactionFormData) => {
-  if (typeof currentBalance === "number") {
+    if (typeof currentBalance === "number") {
+      const prevAmount =
+        isEditMode && typeof defaultValues?.amount === "number"
+          ? defaultValues.amount
+          : 0;
 
-    const prevAmount = defaultValues?.amount ?? 0;
+      const newBalance = currentBalance - prevAmount + data.amount;
 
-    // newBalance = current - old + new
-    const newBalance = currentBalance - prevAmount + data.amount;
-
-    if (newBalance < 0) {
-      setError("amount", { message: "Insufficient funds" });
-      return;
+      if (newBalance < 0) {
+        setError("amount", { message: "Insufficient funds" });
+        return;
+      }
     }
-  }
 
-  onSubmit(data);
-};
+    onSubmit(data);
+  };
 
   useEffect(() => {
     if (isSubmitSuccessful && !defaultValues) {
@@ -86,15 +89,14 @@ export default function TransactionForm({
 
   return (
     <form onSubmit={handleSubmit(submit)} noValidate className="space-y-3">
-      {/* Amount */}
       <div>
         <label className="block text-sm mb-1" htmlFor="amount">
-    Amount <span className="text-red-500">*</span>
-    <span className="text-xs text-[var(--color-text-secondary)]">
-      {" "}
-      (use negative for withdrawals)
-    </span>
-  </label>
+          Amount <span className="text-red-500">*</span>
+          <span className="text-xs text-[var(--color-text-secondary)]">
+            {" "}
+            (use negative for withdrawals)
+          </span>
+        </label>
 
         <Input
           type="number"
@@ -110,11 +112,10 @@ export default function TransactionForm({
         )}
       </div>
 
-      {/* Description */}
       <div>
         <label className="block text-sm mb-1" htmlFor="description">
-    Description <span className="text-red-500">*</span>
-  </label>
+          Description <span className="text-red-500">*</span>
+        </label>
         <Input
           type="text"
           placeholder="e.g., Salary, Grocery Shopping"
@@ -128,17 +129,12 @@ export default function TransactionForm({
         )}
       </div>
 
-      {/* Date */}
       <div>
         <label className="block text-sm mb-1" htmlFor="date">
-    Date <span className="text-red-500">*</span>
-  </label>
+          Date <span className="text-red-500">*</span>
+        </label>
 
-        <Input
-          type="date"
-          {...register("date")}
-          aria-invalid={!!errors.date}
-        />
+        <Input type="date" {...register("date")} aria-invalid={!!errors.date} />
 
         {errors.date && (
           <p className="text-xs text-red-500 mt-1">{errors.date.message}</p>
