@@ -5,7 +5,6 @@ import "../styles/index.css";
 import "../styles/theme.css";
 
 async function enableMocking() {
-  // احتیاط: فقط توی مرورگر، نه مثلا هنگام تست Node
   if (typeof window === "undefined") return;
 
   await worker.start({

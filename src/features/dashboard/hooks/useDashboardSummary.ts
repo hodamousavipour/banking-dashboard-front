@@ -1,4 +1,3 @@
-// src/features/dashboard/hooks/useDashboardSummary.ts
 import { useQuery } from "@tanstack/react-query";
 import { dashboardApi } from "../api";
 import type { DashboardSummary } from "../types";

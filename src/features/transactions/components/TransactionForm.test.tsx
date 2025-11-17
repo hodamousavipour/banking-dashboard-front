@@ -1,4 +1,3 @@
-// src/features/transactions/components/TransactionForm.test.tsx
 import { describe, it, expect, vi } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -39,7 +38,7 @@ describe("TransactionForm", () => {
     render(
       <TransactionForm
         onSubmit={handleSubmit}
-        currentBalance={100} // فقط 100 یورو داریم
+        currentBalance={100} 
       />
     );
 
@@ -48,7 +47,7 @@ describe("TransactionForm", () => {
     const dateInput = screen.getByLabelText(/date/i);
 
     await user.clear(amountInput);
-    await user.type(amountInput, "-150"); // بیشتر از موجودی
+    await user.type(amountInput, "-150");
     await user.type(descriptionInput, "Huge withdrawal");
     await user.clear(dateInput);
     await user.type(dateInput, "2024-02-01");
@@ -61,7 +60,6 @@ describe("TransactionForm", () => {
   });
 
   it("syncs defaultValues when they change (edit mode)", async () => {
-    //const user = userEvent.setup();
     const handleSubmit = vi.fn();
 
     const { rerender } = render(
@@ -75,10 +73,8 @@ describe("TransactionForm", () => {
       />
     );
 
-    // مقدار اولیه
     expect(screen.getByDisplayValue("Groceries")).toBeInTheDocument();
 
-    // تغییر props برای شبیه‌سازی ویرایش تراکنش دیگر
     rerender(
       <TransactionForm
         defaultValues={{

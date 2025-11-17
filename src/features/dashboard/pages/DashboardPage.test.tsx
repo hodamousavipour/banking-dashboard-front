@@ -1,16 +1,12 @@
-// src/features/dashboard/pages/DashboardPage.test.tsx
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import DashboardPage from "./DashboardPage";
 
-// shared mutable mocks so we can tweak per test
 let summaryMock: any;
 let transactionsMock: any;
 let importMock: any;
 let toastMock: any;
-
-// mock hooks & child components used by DashboardPage
 
 vi.mock("../hooks/useDashboardSummary", () => ({
   useDashboardSummary: () => summaryMock,
@@ -24,7 +20,6 @@ vi.mock("../../transactions/hooks/useTransactionsImport", () => ({
   useTransactionsImport: () => importMock,
 }));
 
-// we don't test SummaryCards here (it has its own tests), just that it's called with correct summary
 vi.mock("../components/SummaryCards", () => ({
   __esModule: true,
   default: ({ summary }: any) => (
@@ -34,7 +29,6 @@ vi.mock("../components/SummaryCards", () => ({
   ),
 }));
 
-// simple stub for CsvImportButton (named export)
 vi.mock("../../transactions/components/CsvImportButton", () => ({
   CsvImportButton: ({ isImporting }: any) => (
     <button type="button" data-testid="csv-import">
@@ -43,7 +37,6 @@ vi.mock("../../transactions/components/CsvImportButton", () => ({
   ),
 }));
 
-// simple stub for AddTransactionModal
 vi.mock("../components/AddTransactionModal", () => ({
   __esModule: true,
   default: ({ isOpen }: any) =>
@@ -52,7 +45,6 @@ vi.mock("../components/AddTransactionModal", () => ({
     ) : null,
 }));
 
-// useToastState hook, so we control toast state
 vi.mock("../../../shared/hooks/useToastState", () => ({
   useToastState: () => toastMock,
 }));

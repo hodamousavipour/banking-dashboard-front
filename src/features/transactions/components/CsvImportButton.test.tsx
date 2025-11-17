@@ -1,9 +1,7 @@
-// src/features/transactions/components/CsvImportButton.test.tsx
 import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { CsvImportButton } from "./CsvImportButton";
 
-// Button را mock می‌کنیم تا بتوانیم prop "loading" را روی DOM ببینیم
 vi.mock("../../../shared/components/Button", () => ({
   Button: ({ loading, children, ...rest }: any) => (
     <button data-loading={loading ? "true" : "false"} {...rest}>
@@ -28,7 +26,6 @@ describe("CsvImportButton", () => {
       type: "text/csv",
     });
 
-    // شبیه‌سازی انتخاب فایل
     fireEvent.change(input, {
       target: { files: [file] },
     });

@@ -29,7 +29,6 @@ export default function TransactionForm({
   submitLabel,
   onCancel,
 }: Props) {
-  // 1) یک شیء پایه برای "خالی" بودن فرم
   const emptyDefaults: CreateTransactionFormData = {
     amount: "" as unknown as number,
     description: "",
@@ -48,12 +47,10 @@ export default function TransactionForm({
     defaultValues: {
       ...emptyDefaults,
       ...defaultValues,
-      // اگر defaultValues.date باشد همان را، وگرنه today
       date: defaultValues?.date ?? getToday(),
     },
   });
 
-  // 2) هر وقت props.defaultValues تغییر کند، فرم را sync کن
   useEffect(() => {
     const nextValues: CreateTransactionFormData = {
       ...emptyDefaults,
@@ -65,7 +62,6 @@ export default function TransactionForm({
   }, [defaultValues?.amount, defaultValues?.description, defaultValues?.date, reset]);
 
   const submit = (data: CreateTransactionFormData) => {
-    // prevent overdraft if you pass currentBalance
     if (
       currentBalance != null &&
       data.amount < 0 &&
@@ -78,7 +74,6 @@ export default function TransactionForm({
     onSubmit(data);
   };
 
-  // 3) بعد از submit موفق در حالت "create خالی" (نه edit، نه reuse)، فرم را خالی کن
   useEffect(() => {
     if (isSubmitSuccessful && !defaultValues) {
       reset(emptyDefaults);

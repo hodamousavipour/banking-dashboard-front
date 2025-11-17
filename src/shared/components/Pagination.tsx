@@ -9,7 +9,6 @@ interface PaginationProps {
   className?: string;
 }
 
-/** Simple, accessible pagination. */
 export function Pagination({ page, total, pageSize, onPageChange, className }: PaginationProps) {
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
   const canPrev = page > 1;

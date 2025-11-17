@@ -9,7 +9,6 @@ import UnderConstruction from "../../shared/pages/UnderConstruction";
 
 const DashboardPage = lazy(() => import("../../features/dashboard/pages/DashboardPage"));
 const TransactionsPage = lazy(() => import("../../features/transactions/pages/TransactionsPage"));
-// const LoginPage = lazy(() => import("../../features/auth/pages/LoginPage")); 
 
 
 export function AppRoutes() {

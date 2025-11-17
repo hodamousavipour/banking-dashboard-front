@@ -1,5 +1,5 @@
 export const DEFAULT_PAGE_SIZE = 20;
-// Routes
+
 export const ROUTE_HOME = "/";
 export const ROUTE_LOGIN = "/login";
 export const ROUTE_DASHBOARD = "/dashboard";

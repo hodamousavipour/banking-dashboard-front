@@ -1,4 +1,3 @@
-// src/features/transactions/hooks/useTransactionUndo.ts
 
 import type {
   Transaction,
@@ -40,10 +39,6 @@ interface UseTransactionUndoDeps {
   showInfo: (message: string) => void;
 }
 
-/**
- * فقط register* برمی‌گرداند.
- * هر register یک تابع undo مخصوص همان اکشن می‌سازد.
- */
 export function useTransactionUndo({
   createTransaction,
   updateTransaction,
@@ -52,7 +47,6 @@ export function useTransactionUndo({
   showError,
   showInfo,
 }: UseTransactionUndoDeps) {
-  // وقتی یک تراکنش جدید ساخته می‌شود، undo = حذفِ آن تراکنش
   const registerCreated = (tx: Transaction) => {
     return () => {
       deleteTransaction(tx.id, {
@@ -66,7 +60,6 @@ export function useTransactionUndo({
     };
   };
 
-  // وقتی یک تراکنش حذف می‌شود، undo = ساخت مجدد همان تراکنش
   const registerDeleted = (tx: Transaction) => {
     return () => {
       createTransaction(
@@ -87,7 +80,6 @@ export function useTransactionUndo({
     };
   };
 
-  // وقتی یک تراکنش آپدیت می‌شود، undo = برگرداندن به state قبلی
   const registerUpdated = (before: Transaction, _after: Transaction) => {
     return () => {
       updateTransaction(

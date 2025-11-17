@@ -1,4 +1,3 @@
-// src/features/dashboard/components/AddTransactionModal.tsx
 import { Modal } from "../../../shared/components/Modal";
 import TransactionForm from "../../transactions/components/TransactionForm";
 import type { CreateTransactionInput } from "../../transactions/types";
@@ -7,7 +6,7 @@ type Props = {
   isOpen: boolean;
   onClose: () => void;
   onAdd: (data: CreateTransactionInput) => void;
-  isSubmitting?: boolean; // 👈 این رو اضافه کن
+  isSubmitting?: boolean;
 };
 
 export default function AddTransactionModal({
@@ -19,9 +18,9 @@ export default function AddTransactionModal({
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Add Transaction">
       <TransactionForm
-        onSubmit={onAdd}          // 👈 فقط به بالا پاس می‌دیم
+        onSubmit={onAdd}
         submitLabel="Add"
-        isSubmitting={isSubmitting} // 👈 از بیرون می‌آد
+        isSubmitting={isSubmitting}
       />
     </Modal>
   );

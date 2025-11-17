@@ -32,12 +32,12 @@ describe("parseTransactionsCsv", () => {
       {
         date: "2024-02-01",
         description: "Salary",
-        amount: 1000.5, // positive
+        amount: 1000.5, 
       },
       {
         date: "2024-02-02",
         description: "Grocery",
-        amount: -50.25, // negative because Withdrawal
+        amount: -50.25, 
       },
     ]);
   });

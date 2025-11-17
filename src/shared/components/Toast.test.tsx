@@ -1,4 +1,3 @@
-// src/shared/components/Toast.test.tsx
 import { describe, it, expect, vi, afterEach } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -24,7 +23,7 @@ describe("Toast component", () => {
 
     render(<Toast message="Auto close" onClose={onClose} duration={1000} />);
 
-    // زمان را جلو می‌بریم
+  // advance the time
     await vi.advanceTimersByTimeAsync(1000);
 
     expect(onClose).toHaveBeenCalledTimes(1);

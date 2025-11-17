@@ -1,4 +1,3 @@
-// src/shared/components/Modal.test.tsx
 import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -53,10 +52,7 @@ describe("Modal component", () => {
 
     const backdrop = screen.getByRole("dialog");
 
-    // مهم: به‌جای userEvent، مستقیم روی خود backdrop کلیک می‌زنیم
-    fireEvent.click(backdrop);
-
-    expect(onClose).toHaveBeenCalledTimes(1);
+  fireEvent.click(backdrop);    expect(onClose).toHaveBeenCalledTimes(1);
   });
 
   it("does not close when clicking inside the content", async () => {

@@ -1,7 +1,5 @@
-// src/mocks/handlers.ts
 import { http, HttpResponse } from "msw";
 
-// In-memory storage (will persist to localStorage if available)
 let transactions: Array<{
   id: number;
   amount: number;
@@ -9,7 +7,7 @@ let transactions: Array<{
   date: string;
 }> = JSON.parse(localStorage.getItem("transactions") || "[]");
 
-// lastId را از دیتای ذخیره‌شده به‌دست می‌آوریم
+// derive lastId from stored data
 let lastId = transactions.reduce(
   (max, t) => (t.id > max ? t.id : max),
   0
@@ -40,7 +38,6 @@ function getSummary() {
 }
 
 export const handlers = [
-  // GET /transactions
   http.get("/transactions", () => {
     return HttpResponse.json({
       items: transactions,
@@ -48,7 +45,6 @@ export const handlers = [
     });
   }),
 
-  // POST /transactions
   http.post("/transactions", async ({ request }) => {
     const body = (await request.json()) as {
       amount: number;
@@ -64,7 +60,7 @@ export const handlers = [
     }
 
     const newTx = {
-      id: getNextId(),                            // ✅ همیشه یکتا
+      id: getNextId(),
       date: body.date ?? new Date().toISOString(),
       ...body,
     };
@@ -75,7 +71,6 @@ export const handlers = [
     return HttpResponse.json(newTx, { status: 201 });
   }),
 
-  // PUT /transactions/:id
   http.put("/transactions/:id", async ({ params, request }) => {
     const id = Number(params.id);
     const body = (await request.json()) as {
@@ -97,7 +92,6 @@ export const handlers = [
     return HttpResponse.json(transactions[index]);
   }),
 
-  // DELETE /transactions/:id
   http.delete("/transactions/:id", ({ params }) => {
     const id = Number(params.id);
     const exists = transactions.find((t) => t.id === id);
@@ -114,7 +108,6 @@ export const handlers = [
     return HttpResponse.json({ success: true });
   }),
 
-  // GET /summary → dashboard
   http.get("/summary", () => {
     const summary = getSummary();
     return HttpResponse.json(summary);

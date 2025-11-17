@@ -6,7 +6,7 @@ import { AppRoutes } from "./routes";
 import { ErrorBoundary } from "./ErrorBoundary";
 import { Spinner } from "../shared/components/Spinner";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-//import { AuthProvider } from "../features/auth/context/AuthContext"; //  assume user is logged in
+//import { AuthProvider } from "../features/auth/context/AuthContext"; //  assume user is logged in --- IGNORE ---
 
 export default function App() {
   return (

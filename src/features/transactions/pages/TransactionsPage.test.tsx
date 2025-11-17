@@ -10,7 +10,6 @@ let toastMock: any;
 let undoMock: any;
 let paginationMock: any;
 
-// ─── Mocks ──────────────────────────────────────────────────────────────
 
 vi.mock("../hooks/useTransactionFilters", () => ({
   useTransactionFilters: () => filtersMock,
@@ -32,7 +31,6 @@ vi.mock("../hooks/useTransactionUndo", () => ({
   useTransactionUndo: () => undoMock,
 }));
 
-// we don't test internals of these components here
 vi.mock("../components/TransactionFilters", () => ({
   __esModule: true,
   default: () => <div data-testid="filters" />,
@@ -138,12 +136,10 @@ describe("TransactionsPage", () => {
 
     render(<TransactionsPage />);
 
-    // list shows 1 item and delete button
     expect(screen.getByTestId("tx-count")).toHaveTextContent("1");
 
     await user.click(screen.getByRole("button", { name: /delete first/i }));
 
-    // modal should open with description
     expect(
       screen.getByText(/are you sure you want to delete/i)
     ).toBeInTheDocument();

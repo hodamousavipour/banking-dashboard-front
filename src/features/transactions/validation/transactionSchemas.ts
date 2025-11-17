@@ -16,8 +16,9 @@ export const transactionSchema = z.object({
     })
     .refine((v) => v !== 0, {
       message: "Amount cannot be 0",
-    }),
-
+    })
+    .max(1_000_000_000, { message: "Amount cannot exceed 1,000,000,000" }),
+    
   description: z
     .string({
       message: "Description is required",
@@ -26,9 +27,10 @@ export const transactionSchema = z.object({
     .max(120, { message: "Description must be at most 120 characters" }),
 
   date: z.string().superRefine((value, ctx) => {
+
     if (!value || value.trim().length === 0) {
       ctx.addIssue({
-        code: z.ZodIssueCode.custom,
+        code: "custom",
         message: "Date is required",
       });
       return;
@@ -36,7 +38,7 @@ export const transactionSchema = z.object({
 
     if (!dateRegex.test(value)) {
       ctx.addIssue({
-        code: z.ZodIssueCode.custom,
+        code: "custom",
         message: "Invalid date format",
       });
       return;
@@ -44,7 +46,7 @@ export const transactionSchema = z.object({
 
     if (!isValidCalendarDate(value)) {
       ctx.addIssue({
-        code: z.ZodIssueCode.custom,
+        code: "custom",
         message: "Invalid calendar date",
       });
       return;
@@ -52,7 +54,7 @@ export const transactionSchema = z.object({
 
     if (!isYearInRange(value, MIN_YEAR, MAX_YEAR)) {
       ctx.addIssue({
-        code: z.ZodIssueCode.custom,
+        code: "custom",
         message: `Year must be between ${MIN_YEAR} and ${MAX_YEAR}`,
       });
       return;
@@ -60,7 +62,7 @@ export const transactionSchema = z.object({
 
     if (!isPastOrToday(value)) {
       ctx.addIssue({
-        code: z.ZodIssueCode.custom,
+        code: "custom",
         message: "Date cannot be in the future",
       });
     }

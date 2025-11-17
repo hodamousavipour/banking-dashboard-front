@@ -4,13 +4,13 @@ import type { ToastType } from "../components/Toast";
 export interface ToastState {
   message: string;
   type: ToastType;
-  onUndo?: () => void; // optional
+  onUndo?: () => void; 
 }
 
 export interface ShowToastOptions {
   message: string;
   type?: ToastType;
-  onUndo?: () => void; // optional
+  onUndo?: () => void; 
 }
 
 export function useToastState() {
@@ -25,7 +25,6 @@ export function useToastState() {
     setToast(null);
   }, []);
 
-  // sugar helpers (optional ولی خیلی کاربردی)
   const showSuccess = useCallback(
     (message: string, onUndo?: () => void) => {
       setToast({ message, type: "success", onUndo });
@@ -48,11 +47,11 @@ export function useToastState() {
   );
 
   return {
-    toast,        // null یا { message, type, onUndo }
-    showToast,    // showToast({ message, type?, onUndo? })
-    showSuccess,  // showSuccess("Done", optionalUndo)
-    showError,
-    showInfo,
-    hideToast,    // برای بستن دستی یا از داخل Toast
+  toast,        
+  showToast,    
+  showSuccess,  
+  showError,
+  showInfo,
+  hideToast,    
   };
 }

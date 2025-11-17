@@ -1,9 +1,7 @@
-// src/features/dashboard/components/SummaryCards.test.tsx
 import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import SummaryCards from "./SummaryCards";
 
-// mock currency formatter so we don't depend on real formatting
 vi.mock("../../../lib/formatters/currencyFormat", () => ({
   currencyEUR: (value: number) => `EUR ${value}`,
 }));

@@ -1,4 +1,3 @@
-// src/shared/components/Card.tsx
 import { type ReactNode } from "react";
 import { cn } from "../utils/cn";
 

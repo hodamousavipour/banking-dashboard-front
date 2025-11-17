@@ -1,4 +1,3 @@
-// src/features/dashboard/pages/DashboardPage.tsx
 import { useState } from "react";
 import { Card } from "../../../shared/components/Card";
 import { Button } from "../../../shared/components/Button";
@@ -6,24 +5,26 @@ import SummaryCards from "../components/SummaryCards";
 import { useDashboardSummary } from "../hooks/useDashboardSummary";
 import AddTransactionModal from "../components/AddTransactionModal";
 
-// از feature تراکنش‌ها:
 import { useTransactions } from "../../transactions/hooks/useTransactions";
 import { CsvImportButton } from "../../transactions/components/CsvImportButton";
 import { useTransactionsImport } from "../../transactions/hooks/useTransactionsImport";
 
-// toast مشترک
 import { Toast } from "../../../shared/components/Toast";
 import { useToastState } from "../../../shared/hooks/useToastState";
 
-// Undo مشترک با صفحه‌ی تراکنش‌ها
 import { useTransactionUndo } from "../../transactions/hooks/useTransactionUndo";
 import type { CreateTransactionInput } from "../../transactions/types";
 
 export default function DashboardPage() {
-  const { data: summary, isLoading: isSummaryLoading } = useDashboardSummary();
+  const {
+    data: summary,
+    isLoading: isSummaryLoading,
+    isError: isSummaryError,
+    refetch: refetchSummary,
+  } = useDashboardSummary();
+
   const [isAddOpen, setIsAddOpen] = useState(false);
 
-  // از سرور/MSW لیست تراکنش‌ها + create/update/delete
   const {
     transactions,
     createTransaction,
@@ -32,7 +33,6 @@ export default function DashboardPage() {
     isCreating,
   } = useTransactions();
 
-  // toast state
   const {
     toast,
     showSuccess,
@@ -41,7 +41,6 @@ export default function DashboardPage() {
     hideToast,
   } = useToastState();
 
-  // هوک import CSV
   const { isImporting, handleFileSelected } = useTransactionsImport({
     existing: transactions,
     createTransaction,
@@ -50,7 +49,6 @@ export default function DashboardPage() {
     showInfo,
   });
 
-  // فقط registerCreated فعلاً اینجا لازم‌مان است
   const { registerCreated } = useTransactionUndo({
     createTransaction,
     updateTransaction,
@@ -65,7 +63,7 @@ export default function DashboardPage() {
       onSuccess: (created) => {
         const undo = registerCreated(created);
         showSuccess("Transaction created successfully", undo);
-        setIsAddOpen(false); // بعد از موفقیت مدال بسته شود
+        setIsAddOpen(false);
       },
       onError: () => {
         showError("Failed to create transaction");
@@ -75,7 +73,6 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-6">
-      {/* بالا: دکمه Add + Import */}
       <Card>
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <Button type="button" onClick={() => setIsAddOpen(true)}>
@@ -89,12 +86,30 @@ export default function DashboardPage() {
         </div>
       </Card>
 
-      {/* overview */}
       <Card title="Overview">
-        {isSummaryLoading ? "Loading…" : <SummaryCards summary={summary} />}
+        {isSummaryLoading && "Loading…"}
+
+        {!isSummaryLoading && isSummaryError && (
+          <div className="flex flex-col gap-3">
+            <div className="text-sm text-red-600">
+              Failed to load dashboard data. Please try again.
+            </div>
+            <Button
+              type="button"
+              variant="secondary"
+              size="sm"
+              onClick={() => refetchSummary()}
+            >
+              Retry
+            </Button>
+          </div>
+        )}
+
+        {!isSummaryLoading && !isSummaryError && (
+          <SummaryCards summary={summary} />
+        )}
       </Card>
 
-      {/* modal اضافه‌کردن با Undo */}
       <AddTransactionModal
         isOpen={isAddOpen}
         onClose={() => setIsAddOpen(false)}
@@ -102,7 +117,6 @@ export default function DashboardPage() {
         isSubmitting={isCreating}
       />
 
-      {/* Toast مشترک */}
       {toast && (
         <Toast
           message={toast.message}

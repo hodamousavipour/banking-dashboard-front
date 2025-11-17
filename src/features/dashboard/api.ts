@@ -1,4 +1,3 @@
-// src/features/dashboard/api.ts
 import { apiClient } from "../../lib/apiClient";
 import type { DashboardSummary } from "./types";
 

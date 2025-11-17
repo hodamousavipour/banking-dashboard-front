@@ -9,7 +9,6 @@ interface ModalProps {
   children: ReactNode;
 }
 
-/** Accessible modal with ESC-close and focus return. */
 export function Modal({ isOpen, onClose, title, children }: ModalProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const lastFocused = useRef<HTMLElement | null>(null);

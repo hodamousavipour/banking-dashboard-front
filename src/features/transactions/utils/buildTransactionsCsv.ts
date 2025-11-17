@@ -10,7 +10,7 @@ export function buildTransactionsCsv(transactions: Transaction[]): string {
   const header = "Date,Amount,Description,Type";
 
   const rows = transactions.map((tx) => {
-    const date = tx.date.slice(0, 10); // YYYY-MM-DD
+    const date = tx.date.slice(0, 10); 
     const amount = tx.amount.toFixed(2);
 
     // For simplicity, we remove commas from the description

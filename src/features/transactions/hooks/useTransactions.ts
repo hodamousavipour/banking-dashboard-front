@@ -1,4 +1,3 @@
-// src/features/transactions/hooks/useTransactions.ts
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { transactionsApi } from "../api";
 import type {
@@ -25,17 +24,14 @@ export function useTransactions() {
     placeholderData: (prev) => prev,
   });
 
-  // CREATE – بدون optimistic
   const createMutation = useMutation({
     mutationFn: (input: CreateTransactionInput) => transactionsApi.create(input),
     onSuccess: () => {
-      // بعد از موفقیت، لیست تراکنش‌ها و داشبورد را ری‌فچ کن
       qc.invalidateQueries({ queryKey: KEY });
       qc.invalidateQueries({ queryKey: ["dashboard", "summary"] });
     },
   });
 
-  // UPDATE – بدون optimistic
   const updateMutation = useMutation({
     mutationFn: (input: UpdateTransactionInput) => transactionsApi.update(input),
     onSuccess: () => {
@@ -44,7 +40,6 @@ export function useTransactions() {
     },
   });
 
-  // DELETE – بدون optimistic
   const deleteMutation = useMutation({
     mutationFn: (id: number) => transactionsApi.remove(id),
     onSuccess: () => {
@@ -62,8 +57,6 @@ export function useTransactions() {
     isError,
     error,
     refetch,
-
-    // mutations
     createTransaction: createMutation.mutate,
     isCreating: createMutation.isPending,
 

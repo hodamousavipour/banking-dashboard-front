@@ -39,9 +39,9 @@ describe("Pagination component", () => {
     await user.click(nextButton);
     expect(onPageChange).toHaveBeenCalledWith(2);
 
-    await user.click(prevButton);
-    // چون disabled است، نباید handler صدا شود
-    expect(onPageChange).toHaveBeenCalledTimes(1);
+  await user.click(prevButton);
+  // Since it's disabled, the handler should not be called
+  expect(onPageChange).toHaveBeenCalledTimes(1);
   });
 
   it("disables Next on last page", () => {

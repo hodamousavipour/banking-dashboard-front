@@ -1,4 +1,3 @@
-// src/features/transactions/types.ts
 
 export type TxId = number;
 
@@ -6,15 +5,15 @@ export type TransactionKindFilter = "all" | "deposits" | "withdrawals";
 
 export interface Transaction {
   id: TxId;
-  amount: number;           // positive = income, negative = expense
+  amount: number;           
   description: string;
-  date: string;             // ISO
+  date: string;             
 }
 
 export interface CreateTransactionInput {
   amount: number;
   description: string;
-  date?: string;            // default today (server-side / MSW)
+  date?: string;            
 }
 
 export interface UpdateTransactionInput {
@@ -31,9 +30,9 @@ export interface TransactionsResponse {
 
 
 export interface TransactionFilters {
-  q?: string;               // search description
-  from?: string;            // YYYY-MM-DD
-  to?: string;              // YYYY-MM-DD
+  q?: string;               
+  from?: string;            
+  to?: string;             
   kind?: TransactionKindFilter;
 }
 

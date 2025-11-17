@@ -1,4 +1,3 @@
-// src/shared/store/useThemeStore.ts
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
@@ -23,8 +22,7 @@ export const useThemeStore = create<ThemeState>()(
       },
     }),
     {
-      name: "theme", // key in localStorage
-      // only persist what we need
+      name: "theme",
       partialize: (state) => ({ theme: state.theme }),
     }
   )

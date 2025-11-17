@@ -1,4 +1,3 @@
-// src/features/transactions/hooks/useTransactionFormState.ts
 import { useState } from "react";
 import type { Transaction } from "../types";
 import type { CreateTransactionFormData } from "../validation/transactionSchemas";
@@ -83,7 +82,6 @@ if (editing) {
 
   const handleSubmit = (values: CreateTransactionFormData) => {
     if (editing) {
-      // EDIT
       const before = editing;
       const after: Transaction = {
         ...editing,
@@ -106,7 +104,6 @@ if (editing) {
         }
       );
     } else {
-      // CREATE (حالت عادی + Reuse)
       createTransaction(values, {
         onSuccess: (created) => {
           registerCreated(created);
@@ -126,17 +123,12 @@ if (editing) {
   };
 
   return {
-    // state
     editing,
     reuseSource,
     isEditMode,
-
-    // مشتق‌ها برای UI
     formDefaults,
     cardTitle,
     submitLabel,
-
-    // event handlers
     startEdit,
     startReuse,
     cancelForm,

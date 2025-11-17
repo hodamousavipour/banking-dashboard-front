@@ -1,4 +1,3 @@
-// src/features/transactions/components/CsvImportButton.tsx
 import { useRef } from "react";
 import { Button } from "../../../shared/components/Button";
 
@@ -22,7 +21,6 @@ export function CsvImportButton({
         if (file) {
             onFileSelected(file);
         }
-        // اجازه می‌دهیم همان فایل دوباره انتخاب شود
         e.target.value = "";
     };
 

@@ -32,22 +32,16 @@ export function Select({ label, options, className, id, ...props }: SelectProps)
         className={cn(
           "w-full rounded-md px-3 py-2 text-sm outline-none transition",
 
-          /** Background + Text */
           "bg-[var(--color-card)] text-[var(--color-text)]",
 
-          /** Border */
           "border border-[var(--color-input-border)]",
 
-          /** Placeholder equivalent (first option dimmed) */
           "text-[var(--color-text)]",
 
-          /** Focus ring */
           "focus:ring-2 focus:ring-[var(--color-primary)]/40",
 
-          /** Chevron fix */
           "appearance-none",
 
-          /** Add custom arrow */
           "bg-no-repeat bg-right bg-[length:14px_14px]",
 
           className

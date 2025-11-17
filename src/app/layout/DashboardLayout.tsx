@@ -1,4 +1,3 @@
-// src/features/layouts/DashboardLayout.tsx
 import { useState } from "react";
 import { Outlet, NavLink } from "react-router-dom";
 import {
@@ -9,23 +8,21 @@ import {
 } from "@heroicons/react/24/outline";
 import { cn } from "../../shared/utils/cn";
 import { ThemeToggle } from "../../shared/components/ThemeToggle";
-import { ROUTE_PROFILE, ROUTE_DASHBOARD,ROUTE_TRANSACTIONS } from "../../shared/constants";
+import { ROUTE_PROFILE, ROUTE_DASHBOARD, ROUTE_TRANSACTIONS } from "../../shared/constants";
 
 export default function DashboardLayout() {
   const [open, setOpen] = useState(false);
 
-  // کلاس پایه برای لینک‌های منو
   const baseLinkClasses =
     "flex items-center gap-3 rounded px-3 py-2 text-sm font-medium " +
     "text-[var(--color-text-secondary)] hover:bg-[var(--color-border)]/40 hover:text-[var(--color-text)]";
 
-  // وقتی لینک فعال است
   const activeLinkClasses = cn(
-  "border border-[var(--color-primary)]",
-  "bg-[var(--color-primary)]/15",
-  "text-[var(--color-primary)] font-semibold",
-  "rounded-md"
-);
+    "border border-[var(--color-primary)]",
+    "bg-[var(--color-primary)]/15",
+    "text-[var(--color-primary)] font-semibold",
+    "rounded-md"
+  );
 
   return (
     <div className="flex min-h-screen bg-[var(--color-bg)] text-[var(--color-text)]">
@@ -58,7 +55,7 @@ export default function DashboardLayout() {
         <nav className="flex flex-col gap-1 mt-2">
           {/* Dashboard */}
           <NavLink
-           to={ROUTE_DASHBOARD}
+            to={ROUTE_DASHBOARD}
             className={({ isActive }) =>
               cn(baseLinkClasses, isActive && activeLinkClasses)
             }

@@ -1,4 +1,3 @@
-// src/features/transactions/utils/parseTransactionsCsv.ts
 import type { CreateTransactionInput, Transaction } from "../types";
 
 export type CsvTransactionType = "Deposit" | "Withdrawal";
@@ -9,14 +8,11 @@ interface ParsedCsvResult {
   duplicateCount: number;
 }
 
-// very small helper – because format is fixed and simple
 function safeSplit(line: string): string[] {
-  // For this task we assume no quoted commas in description.
   return line.split(",").map((c) => c.trim());
 }
 
 function isValidDateIso(date: string): boolean {
-  // expecting YYYY-MM-DD
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return false;
   const d = new Date(date);
   return !Number.isNaN(d.getTime());
@@ -79,7 +75,6 @@ export function parseTransactionsCsv(
     const lineNumber = index + 2; // 1-based + header
 
     if (!line.trim()) {
-      // skip empty lines
       return;
     }
 
@@ -125,7 +120,6 @@ export function parseTransactionsCsv(
 
     let amount = amountNum;
 
-    // normalize sign based on Type
     if (type === "Deposit" && amount <= 0) {
       amount = Math.abs(amount);
     }

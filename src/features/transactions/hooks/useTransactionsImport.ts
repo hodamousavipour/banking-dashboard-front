@@ -1,11 +1,9 @@
-// src/features/transactions/hooks/useTransactionsImport.ts
 import { useState, useCallback } from "react";
 import type { CreateTransactionInput, Transaction } from "../types";
 import { parseTransactionsCsv } from "../utils/parseTransactionsCsv";
 
 interface UseTransactionsImportOptions {
   existing: Transaction[];
-  // معمولا از useTransactions می‌آد (createMutation.mutate)
   createTransaction: (input: CreateTransactionInput) => void;
   showSuccess: (message: string) => void;
   showError: (message: string) => void;
@@ -40,10 +38,8 @@ export function useTransactionsImport({
           text,
           existing
         );
-        //console.log("PARSED:", { toCreate, errors, duplicateCount });
 
         if (errors.length > 0) {
-          // فقط چند ارور اول برای خوانایی
           const firstErrors = errors.slice(0, 3).join(" | ");
           showError(`Invalid CSV: ${firstErrors}`);
           return;
@@ -60,7 +56,6 @@ export function useTransactionsImport({
           return;
         }
 
-        // create all (simple version)
         toCreate.forEach((input) => {
           createTransaction(input);
         });

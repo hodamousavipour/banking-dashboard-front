@@ -14,7 +14,7 @@ describe("buildTransactionsCsv", () => {
       {
         id: 2,
         amount: -50.25,
-        description: "Grocery,supermarket", // comma should be replaced with space
+        description: "Grocery,supermarket", 
         date: "2024-02-02T09:30:00.000Z",
       },
     ];

@@ -27,18 +27,15 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           className={cn(
             "w-full rounded-md px-3 py-2 text-sm outline-none transition",
 
-            /* Background + Text */
             "bg-[var(--color-input-bg)] text-[var(--color-text)]",
 
-            /* Border */
             error
               ? "border border-red-500"
               : "border border-[var(--color-input-border)]",
 
-            /* Placeholder */
             "placeholder:text-[var(--color-text)]/40",
 
-            /* Focus Ring */
+            
             error
               ? "focus:ring-2 focus:ring-red-400"
               : "focus:ring-2 focus:ring-[var(--color-primary)]/40",
