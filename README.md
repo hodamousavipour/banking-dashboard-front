@@ -6,6 +6,19 @@ All network requests go through a centralized Axios API layer, while TanStack Re
 Form logic is isolated using React Hook Form + Zod, and UI state (like theme toggling) is managed with Zustand.
 The entire backend is simulated using MSW, with a fully mocked API for development and testing. The project also includes test coverage built with Vitest and Testing Library.
 
+Tech Stack
+	•	React + TypeScript – UI development and component logic
+	•	Vite – Fast dev server & build system
+	•	Tailwind CSS – Utility-first styling
+	•	TanStack React Query – Server state management, caching, mutations
+	•	Axios – API client (with interceptors + centralized config)
+	•	Zustand – Lightweight state management for UI/theme
+	•	React Hook Form – Declarative, performant form handling
+	•	Zod – Schema validation, form validation, input sanitization
+	•	MSW (Mock Service Worker) – Full API mocking for both development & production environments
+	•	Vitest – Unit testing framework
+	•	Testing Library – Component testing with a focus on user interactions
+  
 This README explains how to set up, run, test and work with the codebase, and gives a short architecture overview and recommended next steps.
 
 ## Quick start
