@@ -7,19 +7,22 @@ type Props = {
   isOpen: boolean;
   onClose: () => void;
   onAdd: (data: CreateTransactionInput) => void;
+  isSubmitting?: boolean; // 👈 این رو اضافه کن
 };
 
-export default function AddTransactionModal({ isOpen, onClose, onAdd }: Props) {
+export default function AddTransactionModal({
+  isOpen,
+  onClose,
+  onAdd,
+  isSubmitting,
+}: Props) {
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Add Transaction">
       <TransactionForm
-        onSubmit={(values) => {
-          onAdd(values);
-          onClose();
-        }}
+        onSubmit={onAdd}          // 👈 فقط به بالا پاس می‌دیم
         submitLabel="Add"
+        isSubmitting={isSubmitting} // 👈 از بیرون می‌آد
       />
     </Modal>
-    
   );
 }

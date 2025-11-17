@@ -78,10 +78,9 @@ export default function TransactionsPage() {
       showInfo,
     });
 
-  // وقتی فیلترها تغییر کنند، صفحه برگردد به ۱
   useEffect(() => {
-    setPage(1);
-  }, [filters, setPage]);
+  setPage(1);
+}, [q, from, to, kind]);
 
   // ۱) اعمال فیلترها: description + date range + نوع (Deposit/Withdrawal)
   const filtered = transactions.filter((tx) => {

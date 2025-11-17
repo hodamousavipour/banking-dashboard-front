@@ -1,3 +1,4 @@
+// src/features/transactions/hooks/useTransactions.ts
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { transactionsApi } from "../api";
 import type {
@@ -8,11 +9,7 @@ import type {
 } from "../types";
 
 const KEY = ["transactions"] as const;
-let tempIdCounter = -1; 
 
-function getNextTempId() {
-  return tempIdCounter--;
-}
 export function useTransactions() {
   const qc = useQueryClient();
 
@@ -29,82 +26,29 @@ export function useTransactions() {
     placeholderData: (prev) => prev,
   });
 
-  // CREATE (optimistic)
+  // CREATE – بدون optimistic
   const createMutation = useMutation({
     mutationFn: (input: CreateTransactionInput) => transactionsApi.create(input),
-    onMutate: async (input) => {
-    //  console.log("MUTATE createTransaction called with:", input);
-
-      await qc.cancelQueries({ queryKey: KEY });
-      const prev = qc.getQueryData<TransactionsResponse>(KEY);
-      if (prev) {
-        const optimistic: Transaction = {
-          id: getNextTempId(),
-          amount: input.amount,
-          description: input.description,
-          date: input.date ?? new Date().toISOString(),
-        };
-        qc.setQueryData<TransactionsResponse>(KEY, {
-          ...prev,
-          items: [optimistic, ...prev.items],
-          total: prev.total + 1,
-        });
-      }
-      return { prev };
-    },
-    onError: (_e, _vars, ctx) => {
-      if (ctx?.prev) qc.setQueryData(KEY, ctx.prev);
-    },
-    onSettled: () => {
+    onSuccess: () => {
+      // بعد از موفقیت، لیست تراکنش‌ها و داشبورد را ری‌فچ کن
       qc.invalidateQueries({ queryKey: KEY });
       qc.invalidateQueries({ queryKey: ["dashboard", "summary"] });
     },
   });
 
-  // UPDATE (optimistic)
+  // UPDATE – بدون optimistic
   const updateMutation = useMutation({
     mutationFn: (input: UpdateTransactionInput) => transactionsApi.update(input),
-    onMutate: async (input) => {
-      await qc.cancelQueries({ queryKey: KEY });
-      const prev = qc.getQueryData<TransactionsResponse>(KEY);
-      if (prev) {
-        qc.setQueryData<TransactionsResponse>(KEY, {
-          ...prev,
-          items: prev.items.map((t) =>
-            t.id === input.id ? ({ ...t, ...input } as Transaction) : t
-          ),
-        });
-      }
-      return { prev };
-    },
-    onError: (_e, _vars, ctx) => {
-      if (ctx?.prev) qc.setQueryData(KEY, ctx.prev);
-    },
-    onSettled: () => {
+    onSuccess: () => {
       qc.invalidateQueries({ queryKey: KEY });
       qc.invalidateQueries({ queryKey: ["dashboard", "summary"] });
     },
   });
 
-  // DELETE (optimistic)
+  // DELETE – بدون optimistic
   const deleteMutation = useMutation({
     mutationFn: (id: number) => transactionsApi.remove(id),
-    onMutate: async (id) => {
-      await qc.cancelQueries({ queryKey: KEY });
-      const prev = qc.getQueryData<TransactionsResponse>(KEY);
-      if (prev) {
-        qc.setQueryData<TransactionsResponse>(KEY, {
-          ...prev,
-          items: prev.items.filter((t) => t.id !== id),
-          total: Math.max(0, prev.total - 1),
-        });
-      }
-      return { prev };
-    },
-    onError: (_e, _vars, ctx) => {
-      if (ctx?.prev) qc.setQueryData(KEY, ctx.prev);
-    },
-    onSettled: () => {
+    onSuccess: () => {
       qc.invalidateQueries({ queryKey: KEY });
       qc.invalidateQueries({ queryKey: ["dashboard", "summary"] });
     },
@@ -119,10 +63,14 @@ export function useTransactions() {
     isError,
     error,
     refetch,
+
+    // mutations
     createTransaction: createMutation.mutate,
     isCreating: createMutation.isPending,
+
     updateTransaction: updateMutation.mutate,
     isUpdating: updateMutation.isPending,
+
     deleteTransaction: deleteMutation.mutate,
     isDeleting: deleteMutation.isPending,
   };

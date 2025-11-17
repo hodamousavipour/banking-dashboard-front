@@ -15,14 +15,21 @@ import { useTransactionsImport } from "../../transactions/hooks/useTransactionsI
 import { Toast } from "../../../shared/components/Toast";
 import { useToastState } from "../../../shared/hooks/useToastState";
 
+// Undo مشترک با صفحه‌ی تراکنش‌ها
+import { useTransactionUndo } from "../../transactions/hooks/useTransactionUndo";
+import type { CreateTransactionInput } from "../../transactions/types";
+
 export default function DashboardPage() {
   const { data: summary, isLoading: isSummaryLoading } = useDashboardSummary();
   const [isAddOpen, setIsAddOpen] = useState(false);
 
-  // از سرور/MSW لیست تراکنش‌ها + create
+  // از سرور/MSW لیست تراکنش‌ها + create/update/delete
   const {
     transactions,
     createTransaction,
+    updateTransaction,
+    deleteTransaction,
+    isCreating,
   } = useTransactions();
 
   // toast state
@@ -42,6 +49,29 @@ export default function DashboardPage() {
     showError,
     showInfo,
   });
+
+  // فقط registerCreated فعلاً اینجا لازم‌مان است
+  const { registerCreated } = useTransactionUndo({
+    createTransaction,
+    updateTransaction,
+    deleteTransaction,
+    showSuccess,
+    showError,
+    showInfo,
+  });
+
+  const handleAddFromDashboard = (payload: CreateTransactionInput) => {
+    createTransaction(payload, {
+      onSuccess: (created) => {
+        const undo = registerCreated(created);
+        showSuccess("Transaction created successfully", undo);
+        setIsAddOpen(false); // بعد از موفقیت مدال بسته شود
+      },
+      onError: () => {
+        showError("Failed to create transaction");
+      },
+    });
+  };
 
   return (
     <div className="space-y-6">
@@ -64,22 +94,13 @@ export default function DashboardPage() {
         {isSummaryLoading ? "Loading…" : <SummaryCards summary={summary} />}
       </Card>
 
-      {/* modal اضافه‌کردن (همون قبلی) */}
+      {/* modal اضافه‌کردن با Undo */}
       <AddTransactionModal
-  isOpen={isAddOpen}
-  onClose={() => setIsAddOpen(false)}
-  onAdd={(payload) => {
-    createTransaction(payload, {
-      onSuccess: () => {
-        showSuccess("Transaction created successfully");
-        setIsAddOpen(false); // close modal only after success
-      },
-      onError: () => {
-        showError("Failed to create transaction");
-      },
-    });
-  }}
-/>
+        isOpen={isAddOpen}
+        onClose={() => setIsAddOpen(false)}
+        onAdd={handleAddFromDashboard}
+        isSubmitting={isCreating}
+      />
 
       {/* Toast مشترک */}
       {toast && (

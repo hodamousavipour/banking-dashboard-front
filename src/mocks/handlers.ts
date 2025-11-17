@@ -8,11 +8,18 @@ let transactions: Array<{
   description: string;
   date: string;
 }> = JSON.parse(localStorage.getItem("transactions") || "[]");
-let tempIdCounter = -1; 
 
-function getNextTempId() {
-  return tempIdCounter--;
+// lastId را از دیتای ذخیره‌شده به‌دست می‌آوریم
+let lastId = transactions.reduce(
+  (max, t) => (t.id > max ? t.id : max),
+  0
+);
+
+function getNextId() {
+  lastId += 1;
+  return lastId;
 }
+
 function persist() {
   try {
     localStorage.setItem("transactions", JSON.stringify(transactions));
@@ -50,11 +57,14 @@ export const handlers = [
     };
 
     if (!body.description || body.amount === 0) {
-      return HttpResponse.json({ error: "Invalid transaction" }, { status: 400 });
+      return HttpResponse.json(
+        { error: "Invalid transaction" },
+        { status: 400 }
+      );
     }
 
     const newTx = {
-      id: getNextTempId(),
+      id: getNextId(),                            // ✅ همیشه یکتا
       date: body.date ?? new Date().toISOString(),
       ...body,
     };
@@ -76,7 +86,10 @@ export const handlers = [
 
     const index = transactions.findIndex((t) => t.id === id);
     if (index === -1) {
-      return HttpResponse.json({ error: "Transaction not found" }, { status: 404 });
+      return HttpResponse.json(
+        { error: "Transaction not found" },
+        { status: 404 }
+      );
     }
 
     transactions[index] = { ...transactions[index], ...body };
@@ -89,7 +102,10 @@ export const handlers = [
     const id = Number(params.id);
     const exists = transactions.find((t) => t.id === id);
     if (!exists) {
-      return HttpResponse.json({ error: "Transaction not found" }, { status: 404 });
+      return HttpResponse.json(
+        { error: "Transaction not found" },
+        { status: 404 }
+      );
     }
 
     transactions = transactions.filter((t) => t.id !== id);
