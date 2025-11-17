@@ -66,10 +66,20 @@ export default function DashboardPage() {
 
       {/* modal اضافه‌کردن (همون قبلی) */}
       <AddTransactionModal
-        isOpen={isAddOpen}
-        onClose={() => setIsAddOpen(false)}
-        onAdd={(payload) => createTransaction(payload)}
-      />
+  isOpen={isAddOpen}
+  onClose={() => setIsAddOpen(false)}
+  onAdd={(payload) => {
+    createTransaction(payload, {
+      onSuccess: () => {
+        showSuccess("Transaction created successfully");
+        setIsAddOpen(false); // close modal only after success
+      },
+      onError: () => {
+        showError("Failed to create transaction");
+      },
+    });
+  }}
+/>
 
       {/* Toast مشترک */}
       {toast && (

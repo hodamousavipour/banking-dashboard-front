@@ -8,7 +8,7 @@ import type {
 } from "../types";
 
 const KEY = ["transactions"] as const;
-let tempIdCounter = -1; // آیدی‌های موقت منفی و یکتا
+let tempIdCounter = -1; 
 
 function getNextTempId() {
   return tempIdCounter--;

@@ -9,11 +9,10 @@ import axios from "axios";
  * In DEV we hit the same origin ("") so MSW can intercept /api/* paths.
  * In PROD we read from VITE_API_URL.
  */
-const baseURL =
-  import.meta.env.DEV
-    ? "" // same-origin → http://localhost:5173/api/...
-    : (import.meta.env.VITE_API_URL as string) || "https://api.example.com";
-
+const baseURL = import.meta.env.DEV
+  ? ""
+  : import.meta.env.VITE_API_URL;
+  
 export const apiClient = axios.create({
   baseURL,
   headers: { "Content-Type": "application/json" },

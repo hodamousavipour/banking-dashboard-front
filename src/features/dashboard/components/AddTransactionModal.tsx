@@ -20,5 +20,6 @@ export default function AddTransactionModal({ isOpen, onClose, onAdd }: Props) {
         submitLabel="Add"
       />
     </Modal>
+    
   );
 }
