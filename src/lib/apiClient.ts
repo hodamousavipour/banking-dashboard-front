@@ -1,18 +1,7 @@
 import axios from "axios";
 
-/**
- * Shared Axios instance for ALL network calls.
- * - Centralizes baseURL + headers
- * - Attaches auth token if present
- * - Handles common error cases
- *
- * In DEV we hit the same origin ("") so MSW can intercept /api/* paths.
- * In PROD we read from VITE_API_URL.
- */
-const baseURL = import.meta.env.DEV
-  ? ""
-  : import.meta.env.VITE_API_URL;
-  
+const baseURL = "";
+
 export const apiClient = axios.create({
   baseURL,
   headers: { "Content-Type": "application/json" },
