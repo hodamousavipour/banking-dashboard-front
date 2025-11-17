@@ -2,7 +2,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { transactionsApi } from "../api";
 import type {
-  Transaction,
   TransactionsResponse,
   CreateTransactionInput,
   UpdateTransactionInput,
