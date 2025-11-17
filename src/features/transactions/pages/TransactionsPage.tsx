@@ -56,6 +56,11 @@ export default function TransactionsPage() {
 
   const isSubmitting = isCreating || isUpdating;
 
+  const currentBalance = transactions.reduce(
+    (sum, tx) => sum + tx.amount,
+    0
+  );
+
   const { registerCreated, registerDeleted, registerUpdated } =
     useTransactionUndo({
       createTransaction,
@@ -232,6 +237,7 @@ export default function TransactionsPage() {
           onSubmit={handleSubmit}
           isSubmitting={isSubmitting}
           submitLabel={submitLabel}
+          currentBalance={currentBalance}   
           onCancel={
             isEditMode || reuseSource
               ? () => {

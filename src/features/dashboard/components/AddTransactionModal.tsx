@@ -7,6 +7,7 @@ type Props = {
   onClose: () => void;
   onAdd: (data: CreateTransactionInput) => void;
   isSubmitting?: boolean;
+  currentBalance?: number;
 };
 
 export default function AddTransactionModal({
@@ -14,11 +15,13 @@ export default function AddTransactionModal({
   onClose,
   onAdd,
   isSubmitting,
+  currentBalance,
 }: Props) {
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Add Transaction">
       <TransactionForm
         onSubmit={onAdd}
+        currentBalance={currentBalance}
         submitLabel="Add"
         isSubmitting={isSubmitting}
       />

@@ -62,14 +62,14 @@ export default function TransactionForm({
   }, [defaultValues?.amount, defaultValues?.description, defaultValues?.date, reset]);
 
   const submit = (data: CreateTransactionFormData) => {
-    if (
-      currentBalance != null &&
-      data.amount < 0 &&
-      Math.abs(data.amount) > currentBalance
-    ) {
+    if (typeof currentBalance === "number") {
+    const newBalance = currentBalance + data.amount;
+
+    if (newBalance < 0) {
       setError("amount", { message: "Insufficient funds" });
       return;
     }
+  }
 
     onSubmit(data);
   };

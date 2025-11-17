@@ -115,6 +115,7 @@ export default function DashboardPage() {
         onClose={() => setIsAddOpen(false)}
         onAdd={handleAddFromDashboard}
         isSubmitting={isCreating}
+        currentBalance={summary?.balance}
       />
 
       {toast && (
